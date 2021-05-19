@@ -18,4 +18,4 @@ class XLMRoberta(Roberta):
     MASK_TOKEN = '<mask>'
     PAD_TOKEN = '<pad>'
     UNKNOWN_TOKEN = '<unk>'
-    SUBWORD_PREFIX = '_'
+    SUBWORD_PREFIX = '▁'
