@@ -272,7 +272,11 @@ class ContextualWordEmbsAug(WordAugmenter):
                 # In XLNet, it can be the first word of sentence which does not come with sapce. E.g. Zombine (ID:29110)
                 if self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
                     if candidate != '' and not candidate.startswith(self.model.SUBWORD_PREFIX):
+                        raw_cand = candidate
                         candidate = self.model.SUBWORD_PREFIX + candidate
+                        if self.model_type == 'xlm-roberta':
+                            if self.model.tokenizer.convert_ids_to_tokens(self.model.tokenizer.convert_tokens_to_ids('▁334')) == self.model.UNKNOWN_TOKEN:
+                                candidate = raw_cand
 
                 # no candidate
                 if candidate == '':
