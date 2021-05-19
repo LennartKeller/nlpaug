@@ -149,7 +149,7 @@ class ContextualWordEmbsAug(WordAugmenter):
             if (self.model.SUBWORD_PREFIX in token and len(token) < self.aug_min+1) \
                 or (self.model.SUBWORD_PREFIX not in token and len(token) < self.aug_min):
                 continue
-            if self.model_type in ['xlnet', 'roberta']:
+            if self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
                 # xlent may tokenize word incorrectly. For example, 'fox', will be tokeinzed as ['_', 'fox']
                 if token == self.model.SUBWORD_PREFIX:
                     continue
@@ -198,7 +198,7 @@ class ContextualWordEmbsAug(WordAugmenter):
         for i, split_result in enumerate(split_results):
             head_text, tail_text, head_tokens, tail_tokens = split_result            
 
-            if self.model_type in ['xlnet', 'roberta']:
+            if self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
                 # xlent and roberta tokens include prefix (e.g. ▁ or Ġ')
                 cleaned_head_tokens = [t.replace(self.model.SUBWORD_PREFIX, '') for t in head_tokens]
             else:
@@ -218,7 +218,7 @@ class ContextualWordEmbsAug(WordAugmenter):
                 aug_idxes.append(-1)
 
         token_placeholder = self.model.MASK_TOKEN
-        if self.model_type in ['xlnet', 'roberta']:
+        if self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
             token_placeholder = self.model.SUBWORD_PREFIX + token_placeholder  # Adding prefix for
 
         # Augment same index of aug by batch
@@ -243,7 +243,7 @@ class ContextualWordEmbsAug(WordAugmenter):
                 if self.model_type in ['bert', 'distilbert']:
                     ids = self.model.tokenizer.convert_tokens_to_ids(head_doc.get_augmented_tokens())
                     masked_text = self.model.tokenizer.decode(ids).strip()
-                elif self.model_type in ['xlnet', 'roberta']:
+                elif self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
                     masked_text = self.model.tokenizer.convert_tokens_to_string(head_doc.get_augmented_tokens()).strip()
 
                 masked_texts.append(masked_text)
@@ -270,7 +270,7 @@ class ContextualWordEmbsAug(WordAugmenter):
                     candidate = self.sample(output, 1)[0]
 
                 # In XLNet, it can be the first word of sentence which does not come with sapce. E.g. Zombine (ID:29110)
-                if self.model_type in ['xlnet', 'roberta']:
+                if self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
                     if candidate != '' and not candidate.startswith(self.model.SUBWORD_PREFIX):
                         candidate = self.model.SUBWORD_PREFIX + candidate
 
@@ -325,7 +325,7 @@ class ContextualWordEmbsAug(WordAugmenter):
         for i, split_result in enumerate(split_results):
             head_text, tail_text, head_tokens, tail_tokens = split_result            
 
-            if self.model_type in ['xlnet', 'roberta']:
+            if self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
                 # xlent and roberta tokens include prefix (e.g. ▁ or Ġ')
                 cleaned_head_tokens = [t.replace(self.model.SUBWORD_PREFIX, '') for t in head_tokens]
             else:
@@ -347,7 +347,7 @@ class ContextualWordEmbsAug(WordAugmenter):
                 aug_idxes.append(-1)
 
         token_placeholder = self.model.MASK_TOKEN
-        if self.model_type in ['xlnet', 'roberta']:
+        if self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
             token_placeholder = self.model.SUBWORD_PREFIX + token_placeholder  # Adding prefix for
 
         # Augment same index of aug by batch
@@ -378,7 +378,7 @@ class ContextualWordEmbsAug(WordAugmenter):
                         break
                     if self.model_type in ['bert', 'distilbert'] and self.model.SUBWORD_PREFIX in subword_token:
                         to_remove_idxes.append(k)
-                    elif self.model_type in ['xlnet', 'roberta'] and self.model.SUBWORD_PREFIX not in subword_token:
+                    elif self.model_type in ['xlnet', 'roberta', 'xlm-roberta'] and self.model.SUBWORD_PREFIX not in subword_token:
                         to_remove_idxes.append(k)
                     else:
                         break
@@ -391,7 +391,7 @@ class ContextualWordEmbsAug(WordAugmenter):
                 if self.model_type in ['bert', 'distilbert']:
                     ids = self.model.tokenizer.convert_tokens_to_ids(head_doc.get_augmented_tokens())
                     masked_text = self.model.tokenizer.decode(ids).strip()
-                elif self.model_type in ['xlnet', 'roberta']:
+                elif self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
                     masked_text = self.model.tokenizer.convert_tokens_to_string(head_doc.get_augmented_tokens()).strip()
                 masked_texts.append(masked_text)
 
@@ -417,7 +417,7 @@ class ContextualWordEmbsAug(WordAugmenter):
                     candidate = self.sample(output, 1)[0]
 
                 # In XLNet, it can be the first word of sentence which does not come with sapce. E.g. Zombine (ID:29110)
-                if self.model_type in ['xlnet', 'roberta']:
+                if self.model_type in ['xlnet', 'roberta', 'xlm-roberta']:
                     if candidate != '' and not candidate.startswith(self.model.SUBWORD_PREFIX):
                         candidate = self.model.SUBWORD_PREFIX + candidate
 
