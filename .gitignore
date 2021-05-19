@@ -108,6 +108,7 @@ venv.bak/
 
 # IDE
 .idea/
+.vscode/
 
 # model
 model/*

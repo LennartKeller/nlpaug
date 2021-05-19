@@ -30,6 +30,8 @@ def init_context_word_embs_model(model_path, model_type, device, force_reload=Fa
 
     if model_type == 'distilbert':
         model = nml.DistilBert(model_path, device=device, temperature=temperature, top_k=top_k, top_p=top_p, silence=silence)
+    elif model_type == 'xlm-roberta':
+        model = nml.XLMRoberta(model_path, device=device, temperature=temperature, top_k=top_k, top_p=top_p, silence=silence)
     elif model_type == 'roberta':
         model = nml.Roberta(model_path, device=device, temperature=temperature, top_k=top_k, top_p=top_p, silence=silence)
     elif model_type == 'bert':
@@ -118,6 +120,8 @@ class ContextualWordEmbsAug(WordAugmenter):
             return 'xlnet'
         elif 'distilbert' in self.model_path.lower():
             return 'distilbert'
+        elif 'xlm-roberta' in self.model_path.lower():
+            return 'xlm-roberta'
         elif 'roberta' in self.model_path.lower():
             return 'roberta'
         elif 'bert' in self.model_path.lower():
